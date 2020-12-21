@@ -15,6 +15,5 @@ const createConnection = function () {
             });
     });
 }
-
 module.exports.connectToDB = createConnection;
 module.exports.mongoose = mongoose;
