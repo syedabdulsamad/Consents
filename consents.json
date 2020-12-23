@@ -1,0 +1,45 @@
+[{
+        "category": "marketing",
+        "title": "Marketing consent",
+        "text": "This is a marketing consent. It allows us to send mearketing offers which may interest user. This is version 1,",
+        "version": 1,
+        "age": 18,
+        "readOnly": false,
+        "defaultStatus": "ACCEPTED"
+    },
+    {
+        "category": "transactions",
+        "title": "Transactions Consent",
+        "text": "This is a transactions consent. We use users transactions data to keep track and inform user about their spending habbits. We may also send some suggestions to improve spending habbits. This is version 1",
+        "version": 1,
+        "age": 18,
+        "readOnly": false,
+        "defaultStatus": "ACCEPTED"
+    },
+    {
+        "category": "accounts_data",
+        "title": "Accounts data consent",
+        "text": "This is a consent to use users accounts data. This is version 1",
+        "version": 1,
+        "age": 18,
+        "readOnly": false,
+        "defaultStatus": "ACCEPTED"
+    },
+    {
+        "category": "sms",
+        "title": "SMS consent",
+        "text": "This is SMS consent. This is used to get the user's approval to communicate via SMS. This is SMS consent version 1",
+        "version": 1,
+        "age": 18,
+        "readOnly": false,
+        "defaultStatus": "REVOKED"
+    },
+    {
+        "category": "push-notifications",
+        "text": "This is consent for PUSH notifications. This allows us to send you push notifications for any urgent messages in your inbox to which user should pay attention soon. This is consent version 1",
+        "version": 1,
+        "age": 18,
+        "readOnly": false,
+        "defaultStatus": "ACCEPTED"
+    }
+]
