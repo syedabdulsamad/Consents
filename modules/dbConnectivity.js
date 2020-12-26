@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const createConnection = function () {
+import mongoose from "mongoose"
+const connectToDB = function () {
     return new Promise((resolve, reject) => {
         mongoose.connect("mongodb://localhost/Consents", {
                 useNewUrlParser: true,
@@ -15,5 +15,9 @@ const createConnection = function () {
             });
     });
 }
-module.exports.connectToDB = createConnection;
-module.exports.mongoose = mongoose;
+export {
+    connectToDB,
+    mongoose
+};
+// module.exports.connectToDB = createConnection;
+// module.exports.mongoose = mongoose;

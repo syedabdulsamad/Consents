@@ -32,10 +32,11 @@
         "version": 1,
         "age": 18,
         "readOnly": false,
-        "defaultStatus": "REVOKED"
+        "defaultStatus": "REJECTED"
     },
     {
         "category": "push-notifications",
+        "title": "Push Notifications consent",
         "text": "This is consent for PUSH notifications. This allows us to send you push notifications for any urgent messages in your inbox to which user should pay attention soon. This is consent version 1",
         "version": 1,
         "age": 18,

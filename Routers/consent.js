@@ -1,43 +1,9 @@
-const express = require("express");
+import express from "express"
 const router = express.Router();
 
-const {
-    mongoose,
-} = require("../modules/dbConnectivity")
-
-const consentSchema = new mongoose.Schema({
-    category: {
-        type: String,
-        required: true,
-        minlength: 3,
-        maxlength: 50
-    },
-    version: {
-        type: Number,
-        required: true,
-        min: 1,
-        max: 100
-    },
-    text: {
-        type: String,
-        required: true,
-        minlength: 20,
-        maxlength: 5000
-    },
-    age: {
-        type: Number,
-        required: true,
-    },
-    defaultStatus: {
-        type: Boolean,
-        default: true
-    }, // true: Accepted, false: Revoked
-    readOnly: {
-        type: Boolean,
-        default: false
-    }
-});
-const Consent = mongoose.model("Consents", consentSchema);
+import {
+    mongoose
+} from "../modules/dbConnectivity.js"
 
 router.get("/", async (req, res) => {
 
@@ -134,4 +100,6 @@ function findHighestVersionConsent(category) {
     });
 }
 
-module.exports = router;
+export {
+    router as consentsRouter
+}
