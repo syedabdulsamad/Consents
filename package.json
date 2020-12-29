@@ -23,7 +23,8 @@
     "config": "^3.3.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mongoose": "^5.11.8",
+    "lodash": "^4.17.20",
+    "mongoose": "^5.11.9",
     "nodemon": "^2.0.6",
     "rxjs": "^6.6.3"
   }

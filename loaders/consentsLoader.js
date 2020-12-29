@@ -4,9 +4,7 @@ import fs from "fs"
 import {
     Consent
 } from "../schemas/consentSchema.js"
-import {
-    consentsRouter
-} from "../Routers/consent.js";
+//import { consentsRouter } from "../Routers/consent.js";
 
 const fileName = process.env.CONSENTS_DEFINATION_FILE;
 if (!fileName) {
@@ -46,11 +44,24 @@ function readFile() {
     });
 }
 
-async function createConsents(consentsCollection) {
+async function createConsents(fileConsents) {
     // Here we have to get all the consent from DB check their title, version and text and if different then create a new consent in the DB.
     // else ignore that item
+    console.log("Coming here");
+    // from(consentsCollection).pipe(map(co => co.category)).subscribe(x => console.log("wow: ", x));
+    try {
+        const dbConsents = await fetchDBConsents();
+        console.log("DB consents:", dbConsents);
+        //await matchConsents();
 
-    consentsCollection.forEach(async (con) => {
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+async function matchConsents(fileConsents, dbConsents) {
+
+    fileConsents.forEach(async (con) => {
         let consent = new Consent(con);
         try {
             await consent.validate();
@@ -68,6 +79,42 @@ async function createConsents(consentsCollection) {
             console.log(`${ doc.category } consent is saved`);
         });
     });
+}
+
+
+async function fetchDBConsents() {
+
+    return new Promise((resolve, reject) => {
+        Consent.aggregate(
+            [{
+                $sort: {
+                    version: -1
+                }
+            }, {
+                $group: {
+                    _id: "$category",
+                    version: {
+                        $max: "$version"
+                    },
+                    text: {
+                        $first: "$text"
+                    },
+                    title: {
+                        $first: "$title"
+                    },
+                    category: {
+                        $first: "$category"
+                    }
+                }
+            }],
+            function (err, results) {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(results);
+            });
+    })
 }
 
 export {
