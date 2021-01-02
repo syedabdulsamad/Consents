@@ -4,14 +4,38 @@ const router = express.Router();
 import {
     mongoose
 } from "../modules/dbConnectivity.js"
+import {
+    readDBConsents
+} from "../loaders/consentsLoader.js"
+import {
+    Consent
+} from "../schemas/consentSchema.js"
+
+import {
+    pipe,
+    from
+} from "rxjs"
+
+import {
+    map,
+    toArray
+} from "rxjs/operators/index.js"
+import _ from "lodash"
+
+
 
 router.get("/", async (req, res) => {
 
     try {
         console.log("Calling the fetch...");
-        const result = await Consent.find();
-        res.status(200).send(result);
 
+        const consentsCollection = await readDBConsents();
+        from(consentsCollection).pipe(
+                map(consent =>
+                    _.omit(consent, ["_id", "readOnly", "defaultStatus"])
+                ),
+                toArray())
+            .subscribe(consents => res.status(200).send(consents));
     } catch (error) {
         console.log("Failed to fetch...");
         res.status(400).send(new Error(error.errors.message));
@@ -31,7 +55,6 @@ router.get("/:category", async (req, res) => {
             .limit(1);
     } catch (error) {
         console.log(error);
-
     }
 });
 

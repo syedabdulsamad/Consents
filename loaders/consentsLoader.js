@@ -49,7 +49,7 @@ async function createConsents(fileConsents) {
     // else ignore that item
     console.log("Coming here");
     try {
-        const dbConsents = await fetchDBConsents();
+        const dbConsents = await readDBConsents();
         console.log("DB consents:", dbConsents);
         const consentsToUpdate = matchConsents(fileConsents, dbConsents);
         if (consentsToUpdate && consentsToUpdate.length > 0) {
@@ -102,7 +102,7 @@ function matchConsents(fileConsents, dbConsents) {
 }
 
 
-async function fetchDBConsents() {
+const readDBConsents = async function fetchDBConsents() {
 
     return new Promise((resolve, reject) => {
         Consent.aggregate(
@@ -169,5 +169,6 @@ async function updateConsentsInDB(updateableConsents) {
 }
 
 export {
-    loadConsents
+    loadConsents,
+    readDBConsents
 }
