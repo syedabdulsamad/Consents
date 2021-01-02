@@ -2,9 +2,9 @@ import rootPath from "app-root-path"
 import fs from "fs"
 import _ from "lodash"
 import {
-    Consent
-} from "../schemas/consentSchema.js"
-//import { consentsRouter } from "../Routers/consent.js";
+    readAllConsents,
+    updateConsentsInDB
+} from "../database_operations/consents.js"
 
 const fileName = process.env.CONSENTS_DEFINATION_FILE;
 if (!fileName) {
@@ -49,7 +49,7 @@ async function createConsents(fileConsents) {
     // else ignore that item
     console.log("Coming here");
     try {
-        const dbConsents = await readDBConsents();
+        const dbConsents = await readAllConsents();
         console.log("DB consents:", dbConsents);
         const consentsToUpdate = matchConsents(fileConsents, dbConsents);
         if (consentsToUpdate && consentsToUpdate.length > 0) {
@@ -102,73 +102,6 @@ function matchConsents(fileConsents, dbConsents) {
 }
 
 
-const readDBConsents = async function fetchDBConsents() {
-
-    return new Promise((resolve, reject) => {
-        Consent.aggregate(
-            [{
-                $sort: {
-                    version: -1
-                }
-            }, {
-                $group: {
-                    _id: "$category",
-                    defaultStatus: {
-                        $first: "$defaultStatus"
-                    },
-                    readOnly: {
-                        $first: "$readOnly"
-                    },
-                    category: {
-                        $first: "$category"
-                    },
-                    title: {
-                        $first: "$title"
-                    },
-                    text: {
-                        $first: "$text"
-                    },
-                    version: {
-                        $max: "$version"
-                    },
-                    age: {
-                        $first: "$age"
-                    }
-                }
-            }],
-            function (err, results) {
-                if (err) {
-                    reject(err);
-                    return;
-                }
-                resolve(results);
-            });
-    })
-}
-
-async function updateConsentsInDB(updateableConsents) {
-
-    updateableConsents.forEach(async (con) => {
-        let consent = new Consent(con);
-        try {
-            await consent.validate();
-        } catch (err) {
-            console.log(err);
-            process.exit(1);
-        }
-
-        const result = await consent.save((err, doc) => {
-            if (err) {
-                console.log("Failed to save consent in DB.   Error:  ", err);
-                console.log("EXISTING......");
-                process.exit(1);
-            }
-            console.log(`${ doc.category } consent is saved`);
-        });
-    });
-}
-
 export {
-    loadConsents,
-    readDBConsents
+    loadConsents
 }
