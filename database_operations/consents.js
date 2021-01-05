@@ -1,9 +1,6 @@
 import {
     Consent
 } from "../schemas/consentSchema.js"
-import {
-    async
-} from "rxjs";
 
 const readAllConsents = async function fetchDBConsents() {
 
@@ -93,10 +90,8 @@ const readSingleConsent = async function readSingleConsent(category) {
     }
 }
 
-
 export {
     readAllConsents,
     readSingleConsent,
     updateConsentsInDB
-
 }
