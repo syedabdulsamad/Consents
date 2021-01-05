@@ -4,11 +4,19 @@
 // //////////////////////////////////////////////////////////
 import {
     connectToDB,
-} from "./modules/dbConnectivity.js"
+} from "./database_operations/dbConnectivity.js"
 
 import {
     loadConsents
 } from "./loaders/consentsLoader.js"
+
+import {
+    consentsRouter
+} from "./Routers/consent.js"
+import {
+    usersRouter
+} from "./Routers/user.js"
+
 import express from "express"
 
 const app = express();
@@ -35,10 +43,8 @@ async function connectDB() {
 
 starters();
 
-import {
-    consentsRouter
-} from "./Routers/consent.js"
 app.use("/consents", consentsRouter);
+app.use("/users", usersRouter)
 
 const port = process.env.PORT || 3000
 app.listen(port, () => {

@@ -1,6 +1,6 @@
 import {
     mongoose
-} from "../modules/dbConnectivity.js"
+} from "../database_operations/dbConnectivity.js"
 
 const consentSchema = new mongoose.Schema({
     category: {
