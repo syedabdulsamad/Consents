@@ -19,5 +19,3 @@ export {
     connectToDB,
     mongoose
 };
-// module.exports.connectToDB = createConnection;
-// module.exports.mongoose = mongoose;
