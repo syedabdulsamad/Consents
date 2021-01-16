@@ -9,19 +9,25 @@ const userSchema = new mongoose.Schema({
         minlength: 3,
         maxlength: 100
     },
-    userId: {
+    password: {
         type: String,
         required: true,
+        minlength: 10
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
         validate: {
             validator: function (email) {
                 const regex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-                regex.test(v);
+                regex.test(email);
 
             },
             message: props => `${props.value} is not a valid email address!`
         }
     },
-    birthDate: {
+    DOB: {
         type: Date,
         required: true,
         validate: {
@@ -30,8 +36,8 @@ const userSchema = new mongoose.Schema({
                 const minDate = new Date();
                 const maxDate = new Date();
                 minDate.setFullYear(now.getFullYear() - 100);
-                minDate.setFullYear(now.getFullYear() - 18);
-                return (dob < minDate && dob >= maxDate)
+                maxDate.setFullYear(now.getFullYear() - 18);
+                return (dob > minDate && dob <= maxDate)
             },
             message: props => `DOB value : (${props.value}) should be older than 18 years and less than 100 years`
         }
