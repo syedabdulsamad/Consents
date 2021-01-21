@@ -11,6 +11,14 @@ import {
 } from "./loaders/consentsLoader.js"
 
 import {
+    log
+} from "./middleware/logger.js"
+
+import {
+    auth
+} from "./middleware/auth.js"
+
+import {
     consentsRouter
 } from "./Routers/consent.js"
 import {
@@ -18,6 +26,9 @@ import {
 } from "./Routers/user.js"
 
 import express from "express"
+import {
+    from
+} from "rxjs"
 
 const app = express();
 app.use(express.json());
@@ -42,7 +53,8 @@ async function connectDB() {
 }
 
 starters();
-
+app.use(log);
+app.use(auth);
 app.use("/consents", consentsRouter);
 app.use("/users", usersRouter)
 

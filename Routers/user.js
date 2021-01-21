@@ -75,9 +75,11 @@ router.post("/login", async (req, res) => {
 
 //     jwt.verify(req.body.token, jwt_secret, (error, decoded) => {
 //         if (error) {
+
 //             res.send(error).status(401);
-//             return; 
+//             return;
 //         }
+
 //         User.findById(decoded._id, (err, doc) => {
 //             if (err != null) {
 //                 res.status(401).send(err);
@@ -87,7 +89,6 @@ router.post("/login", async (req, res) => {
 //         });
 
 //     });
-
 // })
 
 
