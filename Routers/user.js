@@ -63,12 +63,32 @@ router.post("/login", async (req, res) => {
         return;
     }
     const token = jwt.sign({
+        exp: Math.floor(Date.now() / 1000) + (15 * 60), // token expires in 15 minutes
         _id: user._id
     }, jwt_secret);
 
     res.send(token);
     return;
 });
+
+// router.post("/login/token", async (req, res) => {
+
+//     jwt.verify(req.body.token, jwt_secret, (error, decoded) => {
+//         if (error) {
+//             res.send(error).status(401);
+//             return; 
+//         }
+//         User.findById(decoded._id, (err, doc) => {
+//             if (err != null) {
+//                 res.status(401).send(err);
+//             }
+//             console.log("User: ", doc);
+//             res.send("verified");
+//         });
+
+//     });
+
+// })
 
 
 router.post("/", async (req, res) => {
