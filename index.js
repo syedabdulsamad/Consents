@@ -54,7 +54,6 @@ async function connectDB() {
 
 starters();
 app.use(log);
-app.use(auth);
 app.use("/consents", consentsRouter);
 app.use("/users", usersRouter)
 

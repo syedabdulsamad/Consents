@@ -1,6 +1,8 @@
 import express from "express"
 const router = express.Router();
-
+import {
+    auth
+} from "../middleware/auth.js"
 import {
     readAllConsents,
     readSingleConsent
@@ -18,7 +20,9 @@ import _ from "lodash"
 
 const omitableProperties = ["_id", "defaultStatus", "__v"];
 
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
+
+    console.log("request token data: ", req.body.token_data);
 
     try {
         console.log("Calling the fetch all consents...");
@@ -36,7 +40,7 @@ router.get("/", async (req, res) => {
     }
 });
 
-router.get("/:category", async (req, res) => {
+router.get("/:category", auth, async (req, res) => {
     try {
         const category = req.params.category;
         console.log("Calling to fetch consent: ", category);

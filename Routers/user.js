@@ -62,12 +62,9 @@ router.post("/login", async (req, res) => {
         res.status(400).send("Invalid username or password");
         return;
     }
-    const token = jwt.sign({
-        exp: Math.floor(Date.now() / 1000) + (15 * 60), // token expires in 15 minutes
-        _id: user._id
-    }, jwt_secret);
-
-    res.send(token);
+    const token = user.generateAuthToken();
+    res.setHeader("x-auth-token", token);
+    res.status(200).send("User Authenticated...");
     return;
 });
 
@@ -128,21 +125,24 @@ router.post("/", async (req, res) => {
         console.log(err);
         return res.status(500).send("Something went wrong. try again latter.");
     }
-    user.save((error, doc) => {
-        if (error) {
+
+    try {
+
+        const createdUser = await user.save();
+
+        if (createdUser == null) {
             console.log(`Error when creating user ${error}`);
             res.status(400).send(error);
             return;
-        } else {
-            console.log(`User created:  ${doc}`);
-            const token = jwt.sign({
-                _id: doc._id
-            }, jwt_secret);
-
-            res.status(200).send(token)
         }
-
-    });
+        const token = createdUser.generateAuthToken();
+        res.setHeader("x-auth-token", token);
+        res.status(200).send(token);
+    } catch (error) {
+        console.log(`Error when creating user ${error}`);
+        res.status(400).send(error);
+        return;
+    }
 });
 
 

@@ -1,6 +1,9 @@
 import {
     mongoose
 } from "../database_operations/dbConnectivity.js"
+import jwt from "jsonwebtoken"
+
+const jwt_secret = process.env.JWT_SECRET_KEY
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -43,6 +46,15 @@ const userSchema = new mongoose.Schema({
         }
     }
 });
+
+userSchema.methods.generateAuthToken = function () {
+    const token = jwt.sign({
+        id: this._id,
+        exp: Math.floor(Date.now() / 1000) + (15 * 60), // token expires in 15 minutes
+    }, jwt_secret);
+    return token;
+
+}
 
 
 const User = mongoose.model("User", userSchema);
